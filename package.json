@@ -1,0 +1,23 @@
+{
+  "name": "bun-rsbuild-mpa",
+  "module": "src/js/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "rsbuild dev",
+    "build": "rsbuild build",
+    "preview": "rsbuild preview"
+  },
+  "devDependencies": {
+    "@rsbuild/core": "^2.2.1",
+    "@rsbuild/plugin-pug": "^2.0.0",
+    "@rsbuild/plugin-react": "^2.1.0",
+    "@rsbuild/plugin-sass": "^2.0.1",
+    "@types/node": "^26.4.0",
+    "pug-html-loader": "^1.1.7",
+    "sass": "^1.103.1"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  }
+}
