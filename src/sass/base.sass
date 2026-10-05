@@ -1,0 +1,83 @@
+@font-face
+	font-family: 'Roboto'
+	font-style: normal
+	font-weight: 400
+	src: local('Roboto'), local('Roboto-Regular'), url('/assets/fonts/roboto-v29-latin_cyrillic-regular.woff2') format('woff2')
+	font-display: block
+
+@font-face
+	font-family: 'Roboto'
+	font-style: normal
+	font-weight: 500
+	src: local('Roboto Medium'), local('Roboto-Medium'), url('/assets/fonts/roboto-v29-latin_cyrillic-500.woff2') format('woff2')
+	font-display: block
+
+@font-face
+	font-family: 'Roboto'
+	font-style: normal
+	font-weight: 300
+	src: local('Roboto Light'), local('Roboto-Light'), url('/assets/fonts/roboto-v30-latin_cyrillic-300.woff2') format('woff2')
+	font-display: block
+
+html
+	box-sizing: border-box
+*, *:before, *:after
+	box-sizing: inherit
+
+body
+	margin: 0
+	padding: 0
+	font-family: 'Roboto', sans-serif
+
+b
+	font-weight: 500
+ul
+	margin: 0
+	padding: 0
+	list-style: none
+
+input[type="number"]
+	&.hidden_arrows
+		-moz-appearance: textfield
+		&::-webkit-outer-spin-button,
+		&::-webkit-inner-spin-button
+			-webkit-appearance: none
+			margin: 0	
+
+img, picture,svg
+	max-width: 100%
+	display: block
+.mt1
+	margin-top: 1rem
+.mb1
+	margin-bottom: 1rem
+.mt2
+	margin-top: 2rem
+.mb2
+	margin-bottom: 2rem
+.mt3
+	margin-top: 3rem
+.mb3
+	margin-bottom: 3rem
+.mt50
+	margin-top: 50px
+.mb50
+	margin-bottom: 50px
+
+$desktop: 1200px
+$notebook: 100%
+
+@mixin mw()
+	@media(min-width: 1900px)
+		margin: 0 calc(50% - $desktop/2)
+	@media(min-width: 1899px)
+		margin: 0 calc(50% - $desktop/2)
+	@media(max-width: 1240px)
+		margin: 0 1rem
+@mixin pw()
+	@media(min-width: 1900px)
+		padding: 0 calc(50% - $desktop/2)
+	@media(max-width: 1899px)
+		padding: 0 calc(50% - $desktop/2)
+	@media(max-width: 1240px)
+		padding: 1rem		

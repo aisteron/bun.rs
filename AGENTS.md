@@ -1,4 +1,4 @@
-Помоги, пожалуйста, написать 
+## О проекте
 MPA приложение bun + rsbuild
 - страницы на pug автоматически генерируются из src/pug/pages в index.html, about.html, etc. через fs.readdirSync
 - стили sass, одни на все страницы
