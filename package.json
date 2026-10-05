@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "rsbuild dev",
-    "build": "rsbuild build",
+    "build": "rsbuild build && bun scripts/dedupe-dist.ts",
     "preview": "rsbuild preview"
   },
   "devDependencies": {
