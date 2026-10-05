@@ -9,7 +9,7 @@ const Cart = () => {
 };
 
 // 2. Затем монтируем его в DOM
-//const rootEl = qs('.react-root');
+const rootEl = qs('.react-root');
 if (rootEl) {
   createRoot(rootEl).render(<Cart />);
 }
