@@ -64,20 +64,13 @@ img, picture,svg
 .mb50
 	margin-bottom: 50px
 
-$desktop: 1200px
-$notebook: 100%
-
+$desktop: 1300px
 @mixin mw()
-	@media(min-width: 1900px)
-		margin: 0 calc(50% - $desktop/2)
-	@media(min-width: 1899px)
-		margin: 0 calc(50% - $desktop/2)
-	@media(max-width: 1240px)
+	max-width: $desktop
+	margin: 0 auto
+	@media (max-width: 1340px)
 		margin: 0 1rem
 @mixin pw()
-	@media(min-width: 1900px)
-		padding: 0 calc(50% - $desktop/2)
-	@media(max-width: 1899px)
-		padding: 0 calc(50% - $desktop/2)
-	@media(max-width: 1240px)
-		padding: 1rem		
+	padding: 0 calc(50% - $desktop/2)
+	@media (max-width: 1340px)
+		padding: 0 1rem	
