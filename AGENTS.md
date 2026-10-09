@@ -4,6 +4,13 @@ MPA приложение bun + rsbuild
 - стили sass, одни на все страницы
 - js файл один общий для всех страниц
 
+## Сборка dist — порядок чанков (после `bun run build`)
+- обычные страницы: `runtime.{hash}.js` → `index.{hash}.js` (оба обязательны, `defer` сохраняет порядок; `runtime` удалять нельзя — entry-чанки без него не исполняются)
+- `module1.html`: `runtime` → `react-vendor` → `module1` (React-остров, скрипты не инжектятся — пустой шелл, чанки подключать вручную)
+- CSS: `main.{hash}.css` — общий для всех страниц, `module1.{hash}.css` — только React-остров
+- имена `index`/`module1`/`react-vendor`/`runtime`/`main` заданы явно (entry, `reactVendor` в `plugins/react-modules.ts`, `sharedStyles` + `runtimeChunk: 'single'` в `rsbuild.config.ts`); безымянный shared-чанк получил бы числовой id типа `656`
+- `scripts/dedupe-dist.ts` схлопывает дубли entry-бандлов в `index.*.js` (перед хешем нормализует Rspack chunk-id в шапке `push([[NNN],`)
+
 
 СТРУКТУРА ПРОЕКТА
 

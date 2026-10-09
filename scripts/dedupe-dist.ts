@@ -1,10 +1,20 @@
-// Post-build обвязка: удаляет побайтово идентичные дубли ассетов в dist
+// Post-build обвязка: удаляет дубли ассетов в dist
 // (например about.<hash>.js, дублирующий index.<hash>.js — все страницы
 // используют один COMMON_SCRIPT, а Rspack эмитит отдельный бандл на каждый entry)
 // и переписывает ссылки в HTML на surviving-файл.
 //
+// Нюанс: каждый entry-чанк несёт свой chunk-id в заголовке
+// `(self.rspackChunk...).push([[410],` vs `[[607],` — остальное тело
+// (модули + хвост `e.O(0,[<shared>],...)`) идентично. Поэтому перед хешированием
+// нормализуем только этот заголовок; сам рантайм при этом обязан лежать
+// в общем `runtimeChunk: 'single'` (см. rsbuild.config.ts), иначе в хвостах
+// останутся встроенные `t={410:0,...}` и нормализации заголовка не хватит.
+//
 // Безопасность:
-// - сливаются только файлы с идентичным содержимым (sha256);
+// - сливаются только файлы с идентичным содержимым после нормализации
+//   chunk-id заголовка (sha256 по нормализованному телу);
+// - подмена безопасна: entry-чанк саморегистрируется через push,
+//   зависимость у всех общая (один shared-чанк), рантайм общий;
 // - имена страниц произвольные (index, about, contacts, category, ...);
 // - survivor: предпочтителен `index.*`, иначе первый по алфавиту;
 // - трогаются только quoted URL в <script src> / <link href>;
@@ -26,8 +36,16 @@ import path from 'node:path';
 const DIST = path.resolve(import.meta.dir, '../dist');
 const DRY_RUN = process.argv.includes('--dry-run');
 
+// Нормализация Rspack-заголовка чанка: `.push([[410],` -> `.push([[CHUNK],`.
+// Трогаем только push-хедер (двойная скобка), одиночные `[656]` зависимостей
+// и номера модулей (`902`, `380`) не задеваются.
+const normalizeChunkHeader = (content: string): string =>
+  content.replace(/(\.push\(\[\[)[\d,\s]+(\],)/g, '$1CHUNK$2');
+
 const sha256 = (file: string): string =>
-  createHash('sha256').update(readFileSync(file)).digest('hex');
+  createHash('sha256')
+    .update(normalizeChunkHeader(readFileSync(file, 'utf8')))
+    .digest('hex');
 
 // Маппит URL из HTML в файл внутри dist. null — не локальный/не найден.
 function resolveLocal(url: string): string | null {

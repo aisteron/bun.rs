@@ -92,6 +92,32 @@ html: {
   tools: {
     lightningcssLoader: false,
     cssLoader: { url: false },
+    rspack: (config) => {
+      config.optimization ??= {};
+      // Один общий рантайм на все entries: тела бандлов общего
+      // COMMON_SCRIPT перестают отличаться встроенными chunk-id
+      // (t={410:0,...} vs t={607:0,...}) и становятся байт-идентичными —
+      // scripts/dedupe-dist.ts сможет схлопнуть их в index.*.js.
+      config.optimization.runtimeChunk = 'single';
+
+      // Именованный чанк общих стилей: без этого Rspack кладёт общий sass
+      // в чанк с числовым id (656.{hash}.css). Матчим только CSS-модули
+      // из src/sass (type: css/mini-extract), чтобы JS-стабы импортов
+      // остались в entry (иначе рядом с main.css эмитится пустой main.js),
+      // а App.sass React-островов остался отдельным module1.{hash}.css.
+      const splitChunks = (config.optimization.splitChunks ??= {}) as {
+        cacheGroups?: Record<string, unknown>;
+      };
+      splitChunks.cacheGroups ??= {};
+      splitChunks.cacheGroups.sharedStyles = {
+        name: 'main',
+        type: 'css/mini-extract',
+        test: /[\\/]src[\\/]sass[\\/]/,
+        chunks: 'all',
+        enforce: true,
+        priority: 50,
+      };
+    },
   },
 
   server: {
