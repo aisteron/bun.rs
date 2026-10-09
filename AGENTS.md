@@ -36,15 +36,3 @@ MPA приложение bun + rsbuild
 ├── rsbuild.config.ts
 └── package.json
 
-
-=====
-установка
-
-npm i --save-dev @types/node
-
-bun add -D @rsbuild/core @rsbuild/plugin-pug sass
-bun add -D @rsbuild/plugin-sass
-bun add -D pug-html-loader
-
-bun add -D @rsbuild/plugin-react
-bun add react react-dom

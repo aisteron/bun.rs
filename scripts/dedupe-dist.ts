@@ -120,6 +120,9 @@ function main(): void {
   }));
 
   for (const htmlFile of htmlFiles) {
+    // 404.html — статическая заглушка из public/ (без скриптов и стилей):
+    // ссылок на ассеты в ней нет, переписывать там нечего, файл сохраняем.
+    if (path.basename(htmlFile) === '404.html') continue;
     let html = readFileSync(htmlFile, 'utf8');
     let touched = false;
     for (const { del, keep } of renames) {
