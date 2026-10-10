@@ -45,7 +45,9 @@ export default defineConfig({
       outputDir: 'assets/img',
       filename: 'sprite',
       hashLength: 8,
-      inject: process.env.NODE_ENV === 'development',
+      // dev: инлайн в HTML (хот-релоад иконок), прод: внешний файл с тем же
+      // fullhash, что у js/css (один хеш для бэкенда, см. plugins/svg-sprite.ts)
+      inject: process.env.NODE_ENV !== 'production',
     }),
     pluginReactModules({
       enable: true,
